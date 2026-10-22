@@ -216,6 +216,47 @@
   .plan.p2 .btn { background: var(--sun); }
   .plan:not(.p2) .btn { background: #fff; }
 
+  /* Single services */
+  .svc-cat { margin-top: 3.25rem; }
+  .svc-cat:first-child { margin-top: 0; }
+  .svc-cat-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .svc-ico {
+    width: 56px; height: 56px; border-radius: 50%; border: 3px solid var(--on-color); background: var(--c, var(--sun));
+    color: var(--on-color); display: grid; place-items: center; flex: none; box-shadow: 3px 3px 0 var(--on-color);
+  }
+  .svc-ico svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .svc-cat-head h3 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); }
+  .svc-cat-head p { color: var(--muted); margin-top: .35rem; }
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 1.5rem; }
+  .svc-grid.compact { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1.25rem; }
+  .svc-card {
+    position: relative; display: flex; flex-direction: column; gap: 1.1rem; background: var(--c, var(--sun)); color: var(--on-color);
+    border: 3px solid var(--on-color); border-radius: 32px; padding: 1.7rem 1.6rem; box-shadow: 6px 6px 0 var(--on-color);
+    transition: transform .15s ease, box-shadow .15s ease; animation: rise-in .5s ease backwards;
+  }
+  .svc-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--on-color); }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .svc-main { display: grid; gap: 1rem; align-content: start; }
+  .svc-tag { justify-self: start; background: #fff; border: 2px solid var(--on-color); border-radius: 999px; padding: .15rem .75rem; font-weight: 600; font-size: .85rem; }
+  .svc-card h4 { font-family: var(--display); font-weight: 800; font-size: 1.55rem; line-height: 1.1; letter-spacing: -0.02em; margin: 0; }
+  .svc-card.compact h4 { font-size: 1.3rem; }
+  .svc-card.compact { padding: 1.4rem 1.35rem; border-radius: 28px; }
+  .svc-desc { font-size: 1rem; }
+  .svc-feats { list-style: none; margin: 0; padding: 0; display: grid; gap: .65rem; }
+  .svc-feats li { display: flex; gap: .65rem; align-items: flex-start; font-weight: 600; font-size: 1rem; }
+  .svc-feats svg { flex: none; width: 22px; height: 22px; margin-top: 1px; }
+  .svc-buy { margin-top: auto; display: grid; gap: .9rem; padding-top: .25rem; }
+  .svc-price { font-family: var(--display); font-weight: 800; font-size: clamp(2.1rem, 3.6vw, 2.7rem); letter-spacing: -0.03em; line-height: 1; }
+  .svc-price small { font: 600 1rem var(--body); letter-spacing: 0; margin-left: .3rem; }
+  .svc-price.quote { justify-self: start; font-size: 1.35rem; letter-spacing: -0.01em; border: 3px dashed var(--on-color); border-radius: 999px; padding: .35rem 1rem; }
+  .svc-buy .btn { background: #fff; width: 100%; }
+  .svc-card.solo { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem 2.5rem; }
+  .svc-card.solo .svc-main { flex: 1 1 320px; }
+  .svc-card.solo .svc-buy { flex: 0 1 280px; margin-top: 0; }
+  .selected { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; background: var(--sun); border: 3px solid var(--on-color); border-radius: 20px; padding: .6rem 1rem; margin-top: .9rem; font-weight: 600; }
+  .selected[hidden] { display: none; }
+  .selected button { font: 600 .9rem var(--body); cursor: pointer; background: #fff; color: var(--on-color); border: 2px solid var(--on-color); border-radius: 999px; padding: .2rem .8rem; }
+
   /* How we work */
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
   .step { padding: 1.5rem; border: 3px solid var(--text); border-radius: 28px; background: var(--surface); }
@@ -301,6 +342,7 @@
     <nav id="nav" aria-label="Main">
       <a class="link" href="#services">Services</a>
       <a class="link" href="#plans">Plans</a>
+      <a class="link" href="#single-services">Single services</a>
       <a class="link" href="#process">How we work</a>
       <a class="btn" href="#contact">Say hi</a>
     </nav>
@@ -426,6 +468,16 @@
     </div>
   </section>
 
+  <section id="single-services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Single Services</h2>
+        <p>Powerful Digital Solutions. Individual Services. Transparent Pricing.</p>
+      </div>
+      <div id="svcRoot"></div>
+    </div>
+  </section>
+
   <section id="process">
     <div class="wrap">
       <div class="section-head reveal">
@@ -458,11 +510,16 @@
               <button type="button" class="chip" aria-pressed="false">All services</button>
               <button type="button" class="chip" aria-pressed="false">Not sure yet</button>
             </div>
+            <div class="selected" id="selected" hidden>
+              <span id="selectedText"></span>
+              <button type="button" id="selectedClear">Clear</button>
+            </div>
           </fieldset>
           <div><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required></div>
           <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
           <div><label for="phone">Phone Or WhatsApp</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
-          <div><label for="msg">Tell us a bit about your business</label><textarea id="msg" name="msg"></textarea></div>
+          <div><label for="biz">Business name (optional)</label><input id="biz" name="biz" autocomplete="organization" maxlength="200"></div>
+          <div><label for="msg" id="msgLabel">Tell us a bit about your business</label><textarea id="msg" name="msg"></textarea></div>
           <div><button class="btn" type="submit">Send message</button></div>
           <p class="status" id="status" role="status" aria-live="polite"></p>
         </form>
@@ -518,6 +575,7 @@
   // Plan chips (pick one)
   var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
   function pickPlan(label) {
+    if (label) clearService();
     chips.forEach(function (c) { c.setAttribute('aria-pressed', c.textContent === label ? 'true' : 'false'); });
   }
   chips.forEach(function (c) {
@@ -533,13 +591,18 @@
 
   // Section order, set from the admin panel
   (function () {
-    var KNOWN = ['services', 'plans', 'process', 'contact'];
+    var KNOWN = ['services', 'plans', 'single-services', 'process', 'contact'];
     var CK = 'mk_section_order';
     function clean(v) {
       if (!Array.isArray(v)) return null;
       var out = [];
       v.forEach(function (id) { if (KNOWN.indexOf(id) !== -1 && out.indexOf(id) === -1) out.push(id); });
-      KNOWN.forEach(function (id) { if (out.indexOf(id) === -1) out.push(id); });
+      KNOWN.forEach(function (id, i) {
+        if (out.indexOf(id) !== -1) return;
+        var pos = 0;
+        for (var j = i - 1; j >= 0; j--) { var k = out.indexOf(KNOWN[j]); if (k !== -1) { pos = k + 1; break; } }
+        out.splice(pos, 0, id);
+      });
       return out;
     }
     function apply(order) {
@@ -565,13 +628,178 @@
       }).catch(function () {});
   })();
 
+  // ---------- Single Services ----------
+  var CHECK_SVG = '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#fff" stroke="#14284A" stroke-width="2"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#14284A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICONS = {
+    'Website Development': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
+    'Video Editing': '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg>',
+    'Graphic Design': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1 11-11a2.1 2.1 0 00-3-3L5 16l-1 4z"/><path d="M14 7l3 3"/></svg>',
+    'Custom Digital Solutions': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16v4M17 18h4"/></svg>'
+  };
+  var BLURBS = {
+    'Website Development': 'Pick the package that matches what your business needs.',
+    'Video Editing': 'Send us your footage and get back a polished edit.',
+    'Graphic Design': 'Individual design services, priced to your brief.',
+    'Custom Digital Solutions': 'Something else in mind? Tell us about it.'
+  };
+  var TONES = ['var(--sun)', 'var(--mint)', 'var(--sky)', 'var(--pink)', 'var(--tomato)'];
+
+  function svc(slug, cat, name, desc, feats, price, type, text, cta, order) {
+    return { slug: slug, category: cat, package_name: name, description: desc, features: feats, price: price,
+      pricing_type: type, price_text: text, cta_label: cta, sort_order: order, id: null };
+  }
+  // Used until the database list loads, or if it can't be reached. Keep in sync with the services table.
+  var FALLBACK_SERVICES = [
+    svc('static-website', 'Website Development', 'Static Website', null,
+      ['2\u20133 custom pages', 'Business information and details', 'Responsive design for mobile, tablet and desktop'], 2999, 'fixed', null, null, 10),
+    svc('booking-website', 'Website Development', 'Booking Website', null,
+      ['2\u20133 custom pages', 'Business information and details', 'Dynamic website functionality', 'Smart online booking system', 'Private admin panel to view appointments'], 4999, 'fixed', null, null, 20),
+    svc('ecommerce-website', 'Website Development', 'Full E-Commerce Website', null,
+      ['Flexible page count, subject to agreed project scope', 'Premium 3D website experience', 'Business and product information', 'Dynamic website functionality', 'Buy Now and Add to Cart', 'Complete e-commerce shopping experience'], 9999, 'fixed', null, null, 30),
+    svc('video-editing', 'Video Editing', 'Video Editing', null,
+      ['Professional editing of customer-provided footage', 'Engaging captions and relevant stickers', 'Custom editing based on the client\u2019s requirements'], 299, 'per_video', null, null, 40),
+    svc('logo-design', 'Graphic Design', 'Custom Logo Design', null, [], null, 'quote', 'Get a Quote', null, 50),
+    svc('catalog-design', 'Graphic Design', 'Company Catalog Design', null, [], null, 'quote', 'Get a Quote', null, 51),
+    svc('brochure-design', 'Graphic Design', 'Brochure Design', null, [], null, 'quote', 'Get a Quote', null, 52),
+    svc('e-banner-design', 'Graphic Design', 'E-Banner Design', null, [], null, 'quote', 'Get a Quote', null, 53),
+    svc('promotional-creative-design', 'Graphic Design', 'Promotional Creative Design', null, [], null, 'quote', 'Get a Quote', null, 54),
+    svc('label-design', 'Graphic Design', 'Bottle and Product Label Design', null, [], null, 'quote', 'Get a Quote', null, 55),
+    svc('custom-graphic-design', 'Graphic Design', 'Custom Graphic Design', null, [], null, 'quote', 'Get a Quote', null, 56),
+    svc('custom-digital-solutions', 'Custom Digital Solutions', 'Custom Digital Solutions',
+      'Need something that isn\u2019t listed here? Tell us what you have in mind and we\u2019ll confirm whether we can help, and share a quote.',
+      [], null, 'quote', 'Request a Quote', 'Request a Quote', 60)
+  ];
+
+  function priceLabel(s) {
+    var n = (s.price != null) ? '\u20B9' + Number(s.price).toLocaleString('en-IN') : '';
+    if (s.pricing_type === 'fixed') return n;
+    if (s.pricing_type === 'per_video') return n + ' per video';
+    return s.price_text || 'Get a Quote';
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  var selectedService = null;
+
+  function renderServices(list) {
+    var root = document.getElementById('svcRoot');
+    root.textContent = '';
+    var groups = [], byCat = {};
+    list.forEach(function (s) {
+      if (!byCat[s.category]) { byCat[s.category] = { title: s.category, items: [] }; groups.push(byCat[s.category]); }
+      byCat[s.category].items.push(s);
+    });
+    var tone = 0;
+    groups.forEach(function (g) {
+      var cat = el('div', 'svc-cat');
+      var head = el('div', 'svc-cat-head');
+      var ico = el('span', 'svc-ico');
+      ico.style.setProperty('--c', TONES[groups.indexOf(g) % TONES.length]);
+      ico.innerHTML = ICONS[g.title] || ICONS['Custom Digital Solutions'];
+      var txt = el('div');
+      txt.appendChild(el('h3', null, g.title));
+      if (BLURBS[g.title]) txt.appendChild(el('p', null, BLURBS[g.title]));
+      head.appendChild(ico); head.appendChild(txt); cat.appendChild(head);
+
+      var solo = g.items.length === 1, compact = g.items.length >= 4;
+      var grid = el('div', 'svc-grid' + (compact ? ' compact' : ''));
+      g.items.forEach(function (s, idx) {
+        var quote = s.pricing_type === 'quote';
+        var card = el('article', 'svc-card' + (solo ? ' solo' : '') + (compact ? ' compact' : ''));
+        card.style.setProperty('--c', TONES[tone++ % TONES.length]);
+        card.style.animationDelay = (idx * 70) + 'ms';
+
+        var main = el('div', 'svc-main');
+        main.appendChild(el('span', 'svc-tag', quote ? 'Quote-based' : 'Fixed price'));
+        main.appendChild(el('h4', null, s.package_name));
+        if (s.description) main.appendChild(el('p', 'svc-desc', s.description));
+        if (s.features && s.features.length) {
+          var ul = el('ul', 'svc-feats');
+          s.features.forEach(function (f) {
+            var li = el('li');
+            var ic = el('span'); ic.innerHTML = CHECK_SVG;
+            li.appendChild(ic.firstChild);
+            li.appendChild(document.createTextNode(f));
+            ul.appendChild(li);
+          });
+          main.appendChild(ul);
+        }
+
+        var buy = el('div', 'svc-buy');
+        var price = el('div', 'svc-price' + (quote ? ' quote' : ''));
+        if (s.pricing_type === 'per_video') {
+          price.appendChild(document.createTextNode('\u20B9' + Number(s.price).toLocaleString('en-IN')));
+          price.appendChild(el('small', null, 'per video'));
+        } else {
+          price.textContent = priceLabel(s);
+        }
+        var cta = s.cta_label || 'Get This Service';
+        var btn = el('button', 'btn', cta);
+        btn.type = 'button';
+        btn.setAttribute('aria-label', cta + ': ' + s.package_name);
+        btn.addEventListener('click', function () { selectService(s, true); });
+        buy.appendChild(price); buy.appendChild(btn);
+
+        card.appendChild(main); card.appendChild(buy);
+        grid.appendChild(card);
+      });
+      cat.appendChild(grid);
+      root.appendChild(cat);
+    });
+  }
+
+  function selectService(s, scroll) {
+    selectedService = {
+      id: s.id || null, category: s.category, name: s.package_name,
+      label: priceLabel(s), type: s.pricing_type
+    };
+    pickPlan('');
+    document.getElementById('selectedText').textContent =
+      'Selected service: ' + s.package_name + ' \u2014 ' + selectedService.label;
+    document.getElementById('selected').hidden = false;
+    document.getElementById('msgLabel').textContent = 'Project requirements';
+    if (scroll) {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.getElementById('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      setTimeout(function () { try { document.getElementById('name').focus({ preventScroll: true }); } catch (e) {} }, reduce ? 0 : 600);
+    }
+  }
+  function clearService() {
+    selectedService = null;
+    document.getElementById('selected').hidden = true;
+    document.getElementById('msgLabel').textContent = 'Tell us a bit about your business';
+  }
+  document.getElementById('selectedClear').addEventListener('click', clearService);
+
+  renderServices(FALLBACK_SERVICES);
+  fetch(SUPABASE_URL + '/rest/v1/services?select=*&is_active=eq.true&order=sort_order.asc', { headers: { 'apikey': SUPABASE_KEY } })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) { if (Array.isArray(rows) && rows.length) renderServices(rows); })
+    .catch(function () {});
+
+  // ---------- Contact form: saves the enquiry to Supabase ----------
+  function newId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+    });
+  }
+  var submissionId = newId(); // lets the database ignore accidental double submissions
+
   document.getElementById('form').addEventListener('submit', function (e) {
     e.preventDefault();
     var status = document.getElementById('status');
-    var name = document.getElementById('name'), email = document.getElementById('email');
+    var name = document.getElementById('name'), email = document.getElementById('email'), msg = document.getElementById('msg');
     var btn = e.target.querySelector('button[type="submit"]');
     if (!name.value.trim()) { status.textContent = 'Add your name so we know who to reply to.'; name.focus(); return; }
     if (!email.value.trim() || !email.checkValidity()) { status.textContent = 'Enter a valid email so we can reply.'; email.focus(); return; }
+    if (selectedService && selectedService.type === 'quote' && !msg.value.trim()) {
+      status.textContent = 'Tell us what you need so we can prepare a quote.'; msg.focus(); return;
+    }
     var plan = (chips.filter(function (c) { return c.getAttribute('aria-pressed') === 'true'; })[0] || {}).textContent || null;
 
     btn.disabled = true;
@@ -586,13 +814,22 @@
         name: name.value.trim(),
         email: email.value.trim(),
         phone: document.getElementById('phone').value.trim() || null,
+        business_name: document.getElementById('biz').value.trim() || null,
         plan: plan,
-        message: document.getElementById('msg').value.trim() || null
+        service_id: selectedService ? selectedService.id : null,
+        service_category: selectedService ? selectedService.category : null,
+        package_name: selectedService ? selectedService.name : null,
+        price_label: selectedService ? selectedService.label : null,
+        message: msg.value.trim() || null,
+        submission_id: submissionId
       })
     }).then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      // 409 means this exact submission was already saved, so treat it as success
+      if (!res.ok && res.status !== 409) throw new Error('HTTP ' + res.status);
       e.target.reset();
       pickPlan('');
+      clearService();
+      submissionId = newId();
       status.textContent = 'Thanks! We got your message and will get back to you soon.';
     }).catch(function () {
       status.textContent = 'Something went wrong. Please email us at ' + CONTACT_EMAIL + '.';
